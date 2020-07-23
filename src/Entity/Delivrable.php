@@ -4,9 +4,15 @@ namespace App\Entity;
 
 use App\Repository\DelivrableRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=DelivrableRepository::class)
+ * @ApiResource(
+ *  attributes={
+ *      "order": {"uploadedAt":"desc"}
+ *  }
+ * )
  */
 class Delivrable
 {

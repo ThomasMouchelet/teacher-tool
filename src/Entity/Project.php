@@ -6,9 +6,16 @@ use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
+ * @ApiResource(
+ *  attributes={
+ *      "order": {"endingAt":"desc"}
+ *  }
+ * )
  */
 class Project
 {
