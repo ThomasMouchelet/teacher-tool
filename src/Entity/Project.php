@@ -8,10 +8,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
  * @ApiResource(
+ *  subresourceOperations={
+ *      "api_teams_projects_get_subresource"={
+ *          "normalization_context"={"groups"={"projects_subresource"}}
+ *      }
+ *  },
+ *  normalizationContext={
+ *     "groups"={"projects_read"}
+ *  },
  *  attributes={
  *      "order": {"endingAt":"desc"}
  *  }
@@ -23,41 +32,49 @@ class Project
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"projects_read","projects_subresource"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"projects_read","projects_subresource"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"projects_read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"projects_read","projects_subresource"})
      */
     private $endingAt;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"projects_read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"projects_read"})
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="projects")
+     * @Groups({"projects_read"})
      */
     private $team;
 
     /**
      * @ORM\OneToMany(targetEntity=Delivrable::class, mappedBy="project")
+     * @Groups({"projects_read"})
      */
     private $delivrables;
 

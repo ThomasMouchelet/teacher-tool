@@ -7,10 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 
 /**
  * @ORM\Entity(repositoryClass=TeamRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *  subresourceOperations={
+ *      "projects_get_subresource"={"path"="/teams/{id}/projects"}
+ *  },
+ * )
  */
 class Team
 {
@@ -43,6 +48,7 @@ class Team
 
     /**
      * @ORM\OneToMany(targetEntity=Project::class, mappedBy="team")
+     * @ApiSubresource
      */
     private $projects;
 
