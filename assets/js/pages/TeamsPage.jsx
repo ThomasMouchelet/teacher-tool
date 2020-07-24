@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import List from "@material-ui/core/List";
 import { ListItem, Divider } from "@material-ui/core";
 
-const TeamsPage = (props) => {
+const TeamsPage = () => {
   const [teams, setTeams] = useState([]);
 
   const fetchTeams = async () => {

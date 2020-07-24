@@ -9,11 +9,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 const StudentsPage = (props) => {
   const [students, setStudents] = useState([]);
+  const {team_id} = props.match.params
 
   const fetchStudents = async () => {
     try {
       const data = await StudentsAPI.findAllTeamsStudents(
-        props.match.params.team_id
+        team_id
       );
       setStudents(data);
     } catch (error) {
@@ -23,8 +24,8 @@ const StudentsPage = (props) => {
 
   useEffect(() => {
     fetchStudents();
-    props.updateTeamPath(props.match.params.team_id);
-  }, [props.match.params.team_id]);
+    props.updateTeamPath(team_id);
+  }, [team_id]);
 
   return (
     <div>

@@ -6,10 +6,12 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import DialogFormProject from "../components/DialogFormProject";
 import ListItemText from "@material-ui/core/ListItemText";
+import FormProject from "../components/FormProject"
 
 const ProjectsPage = (props) => {
   const [projects, setProjects] = useState([]);
   const { team_id } = props.match.params;
+  const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
   const fetchProjects = async () => {
     try {
@@ -25,11 +27,23 @@ const ProjectsPage = (props) => {
     props.updateTeamPath(team_id);
   }, [team_id]);
 
+  const addProject = async (project) => {
+    try {
+      await ProjectsAPI.create(project);
+      setDialogIsOpen(false);
+      fetchProjects();
+    } catch ( error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div>
         <h1>Liste des projets</h1>
-        <DialogFormProject teamID={team_id} fetchProjects={fetchProjects} />
+        <DialogFormProject dialogIsOpen={dialogIsOpen} setDialogIsOpen={setDialogIsOpen}>
+          <FormProject teamID={team_id} fetchProjects={fetchProjects} addProject={addProject} />
+        </DialogFormProject>
       </div>
       <List component="nav" aria-label="main mailbox folders">
         {projects.map((project) => {
