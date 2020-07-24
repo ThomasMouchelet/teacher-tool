@@ -17,8 +17,20 @@ function findOne(id) {
   return axios.get(`${STUDENTS_URL}/${id}`).then((response) => response.data);
 }
 
+function create(student) {
+  return axios
+    .post(STUDENTS_URL, {
+      ...student,
+      teams: ["api/teams/" + student.team],
+    })
+    .then(async (response) => {
+      return response;
+    });
+}
+
 export default {
   findAll,
   findAllTeamsStudents,
   findOne,
+  create
 };
