@@ -18,17 +18,22 @@ const App = () => {
 
   const [teamID, setTeamID] = useState(null);
   const [teams, setTeams] = useState([]);
+  const [teamPath, setTeamPath] = useState("");
 
   useEffect(() => {
     fetchTeams();
   }, []);
 
+  const updateTeamPath = (id) => {
+    setTeamPath(`/teams/${id}`);
+  };
+
   const fetchTeams = async () => {
     try {
       const data = await TeamsAPI.findAll();
       setTeams(data);
-      if (!teamID) {
-        setTeamID(data[0].id);
+      if (!teamPath) {
+        updateTeamPath(data[0].id);
       }
     } catch (error) {
       console.log(error.response);
@@ -43,26 +48,30 @@ const App = () => {
             <DrawerNavWithRouter teams={teams} />
           </Grid>
           <Grid item sm={11}>
-            <TabBarWithRouter teamID={teamID} />
+            <TabBarWithRouter teamPath={teamPath} />
             <Switch>
               <Route
                 path="/teams/:team_id/projects/:id"
-                component={ProjectPage}
+                render={(props) => (
+                  <ProjectPage {...props} teamPath={teamPath} />
+                )}
               />
               <Route
                 path="/teams/:team_id/students/:id"
-                component={StudentPage}
+                render={(props) => (
+                  <StudentPage {...props} teamPath={teamPath} />
+                )}
               />
               <Route
                 path="/teams/:team_id/projects"
                 render={(props) => (
-                  <ProjectsPage {...props} setTeamID={setTeamID} />
+                  <ProjectsPage {...props} updateTeamPath={updateTeamPath} />
                 )}
               />
               <Route
                 path="/teams/:team_id/students"
                 render={(props) => (
-                  <StudentsPage {...props} setTeamID={setTeamID} />
+                  <StudentsPage {...props} updateTeamPath={updateTeamPath} />
                 )}
               />
             </Switch>

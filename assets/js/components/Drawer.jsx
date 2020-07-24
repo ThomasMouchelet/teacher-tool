@@ -14,7 +14,6 @@ import ListItem from "@material-ui/core/ListItem";
 import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from "@material-ui/icons/Add";
-import TeamsAPI from "../services/teamsAPI";
 import { NavLink } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 

@@ -24,7 +24,7 @@ const ProjectPage = (props) => {
 
   return (
     <>
-      <Link to={`/teams/${props.match.params.team_id}/projects`}>
+      <Link to={`${props.teamPath}/projects`}>
         <Button variant="contained" color="primary">
           <GoChevronLeft />
           Retour aux projets

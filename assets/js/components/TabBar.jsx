@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SimpleBottomNavigation(props) {
+export default function SimpleBottomNavigation({ teamPath }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -30,13 +30,13 @@ export default function SimpleBottomNavigation(props) {
       showLabels
       className={classes.root}
     >
-      <NavLink to={`/teams/${props.teamID}/projects`}>
+      <NavLink to={`${teamPath}/projects`}>
         <BottomNavigationAction label="Flux" icon={<AiOutlineNotification />} />
       </NavLink>
-      <NavLink to={`/teams/${props.teamID}/projects`}>
+      <NavLink to={`${teamPath}/projects`}>
         <BottomNavigationAction label="Projets" icon={<AiOutlineProject />} />
       </NavLink>
-      <NavLink to={`/teams/${props.teamID}/students`}>
+      <NavLink to={`${teamPath}/students`}>
         <BottomNavigationAction label="Etudiants" icon={<BsPeopleFill />} />
       </NavLink>
     </BottomNavigation>

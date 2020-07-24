@@ -23,7 +23,7 @@ const StudentsPage = (props) => {
 
   useEffect(() => {
     fetchStudents();
-    props.setTeamID(props.match.params.team_id);
+    props.updateTeamPath(props.match.params.team_id);
   }, [props.match.params.team_id]);
 
   return (

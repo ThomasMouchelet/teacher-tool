@@ -23,7 +23,7 @@ const StudentPage = (props) => {
 
   return (
     <>
-      <Link to={`/teams/${props.match.params.team_id}/students`}>
+      <Link to={`${props.teamPath}/students`}>
         <Button variant="contained" color="primary">
           <GoChevronLeft />
           Retour aux etudiants

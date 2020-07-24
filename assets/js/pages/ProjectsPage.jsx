@@ -9,12 +9,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 const ProjectsPage = (props) => {
   const [projects, setProjects] = useState([]);
+  const { team_id } = props.match.params;
 
   const fetchProjects = async () => {
     try {
-      const data = await ProjectsAPI.findAllTeamsProjects(
-        props.match.params.team_id
-      );
+      const data = await ProjectsAPI.findAllTeamsProjects(team_id);
       setProjects(data);
     } catch (error) {
       console.log(error);
@@ -23,23 +22,20 @@ const ProjectsPage = (props) => {
 
   useEffect(() => {
     fetchProjects();
-    props.setTeamID(props.match.params.team_id);
-  }, [props.match.params.team_id]);
+    props.updateTeamPath(team_id);
+  }, [team_id]);
 
   return (
     <div>
       <div>
         <h1>Liste des projets</h1>
-        <DialogFormProject
-          teamID={props.match.params.team_id}
-          fetchProjects={fetchProjects}
-        />
+        <DialogFormProject teamID={team_id} fetchProjects={fetchProjects} />
       </div>
       <List component="nav" aria-label="main mailbox folders">
         {projects.map((project) => {
           return (
             <Link
-              to={`/teams/${props.match.params.team_id}/projects/${project.id}`}
+              to={`/teams/${team_id}/projects/${project.id}`}
               key={project.id}
             >
               <List>
