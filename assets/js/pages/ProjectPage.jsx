@@ -32,7 +32,7 @@ const ProjectPage = (props) => {
       </Link>
       <h1>{project.name}</h1>
       <div>{project.description}</div>
-      <div>jusqu'au : {moment(project.endingDate).format("DD/MM/YYYY")}</div>
+      <div>jusqu'au : {moment(project.endingAt).format("DD/MM/YYYY")}</div>
     </>
   );
 };

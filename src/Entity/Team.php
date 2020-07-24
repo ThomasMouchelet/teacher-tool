@@ -13,7 +13,8 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
  * @ORM\Entity(repositoryClass=TeamRepository::class)
  * @ApiResource(
  *  subresourceOperations={
- *      "projects_get_subresource"={"path"="/teams/{id}/projects"}
+ *      "projects_get_subresource"={"path"="/teams/{id}/projects"},
+ *      "stuents_get_subresource"={"path"="/teams/{id}/students"}
  *  },
  * )
  */
@@ -43,6 +44,7 @@ class Team
 
     /**
      * @ORM\ManyToMany(targetEntity=Student::class, mappedBy="teams")
+     * @ApiSubresource
      */
     private $students;
 

@@ -15,7 +15,10 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@date-io/date-fns": "^2.8.0",
         "@material-ui/core": "^4.11.0",
+        "@material-ui/icons": "^4.9.1",
+        "@material-ui/pickers": "^3.2.10",
         "axios": "^0.19.2",
         "moment": "^2.27.0",
         "react": "^16.13.1",

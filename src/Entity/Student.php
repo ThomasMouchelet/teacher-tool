@@ -8,10 +8,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=StudentRepository::class)
  * @ApiResource(
+ *  subresourceOperations={
+ *      "api_teams_students_get_subresource"={
+ *          "normalization_context"={"groups"={"students_subresource"}}
+ *      }
+ *  },
  *  attributes={
  *      "order": {"lastName":"desc"}
  *  }
@@ -23,16 +29,19 @@ class Student implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"students_subresource"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"students_subresource"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"students_subresource"})
      */
     private $firstName;
 
