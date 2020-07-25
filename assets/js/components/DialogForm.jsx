@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = React.forwardRef((props, ref) => {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function DialogForm(props) {
   const classes = useStyles();
-  
+
   const handleClickOpen = () => {
     props.setDialogIsOpen(true);
   };

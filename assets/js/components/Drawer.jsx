@@ -11,11 +11,12 @@ import List from "@material-ui/core/List";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
-import Fab from "@material-ui/core/Fab";
 import Tooltip from "@material-ui/core/Tooltip";
-import AddIcon from "@material-ui/icons/Add";
-import { NavLink } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import FormTeam from "./FormTeam";
+import DialogForm from "../components/DialogForm";
+import { NavLink } from "react-router-dom";
+import TeamsAPI from "../services/teamsAPI";
 
 const drawerWidth = 240;
 
@@ -53,7 +54,18 @@ const useStyles = makeStyles((theme) =>
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
+
+  const addTeam = async (team) => {
+    try {
+      const response = await TeamsAPI.create(team);
+      setDialogIsOpen(false);
+      props.fetchTeams();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -92,11 +104,13 @@ export default function MiniDrawer(props) {
             );
           })}
         </List>
-        <Tooltip title="Add" aria-label="add">
-          <Fab color="primary" className={classes.fab}>
-            <AddIcon />
-          </Fab>
-        </Tooltip>
+
+        <DialogForm
+          dialogIsOpen={dialogIsOpen}
+          setDialogIsOpen={setDialogIsOpen}
+        >
+          <FormTeam addTeam={addTeam} />
+        </DialogForm>
       </Drawer>
     </div>
   );

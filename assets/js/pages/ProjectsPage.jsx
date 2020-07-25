@@ -3,8 +3,8 @@ import ProjectsAPI from "../services/projectsAPI";
 import List from "@material-ui/core/List";
 import { ListItem, Divider } from "@material-ui/core";
 import moment from "moment";
-import { Link } from "react-router-dom";
-import DialogFormProject from "../components/DialogFormProject";
+import { NavLink } from "react-router-dom";
+import DialogForm from "../components/DialogForm";
 import ListItemText from "@material-ui/core/ListItemText";
 import FormProject from "../components/FormProject";
 import Button from "@material-ui/core/Button";
@@ -55,7 +55,7 @@ const ProjectsPage = (props) => {
     <div>
       <div>
         <h1>Liste des projets</h1>
-        <DialogFormProject
+        <DialogForm
           dialogIsOpen={dialogIsOpen}
           setDialogIsOpen={setDialogIsOpen}
         >
@@ -64,20 +64,20 @@ const ProjectsPage = (props) => {
             fetchProjects={fetchProjects}
             addProject={addProject}
           />
-        </DialogFormProject>
+        </DialogForm>
       </div>
       <List component="nav" aria-label="main mailbox folders">
         {projects.map((project) => {
           return (
             <li className="listItem" key={project.id}>
-              <Link to={`/teams/${team_id}/projects/${project.id}`}>
+              <NavLink to={`/teams/${team_id}/projects/${project.id}`}>
                 <ListItem button>
                   <ListItemText
                     primary={project.name}
                     secondary={moment(project.endingAt).format("DD/MM/YYYY")}
                   />
                 </ListItem>
-              </Link>
+              </NavLink>
               <Button
                 variant="contained"
                 color="secondary"

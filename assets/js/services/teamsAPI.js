@@ -1,4 +1,3 @@
-import React from "react";
 import { TEAMS_URL } from "../config";
 import axios from "axios";
 
@@ -11,7 +10,14 @@ function findOne(id) {
   return axios.get(`${TEAMS_URL}/${id}`).then((response) => response.data);
 }
 
+function create(team) {
+  return axios.post(TEAMS_URL, team).then(async (response) => {
+    return response;
+  });
+}
+
 export default {
   findAll,
   findOne,
+  create,
 };

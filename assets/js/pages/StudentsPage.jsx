@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import StudentsAPI from "../services/studentsAPI";
 import List from "@material-ui/core/List";
 import { ListItem, Divider } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ListItemText from "@material-ui/core/ListItemText";
-import DialogFormProject from "../components/DialogFormProject";
+import DialogForm from "../components/DialogForm";
 import FormStudent from "../components/FormStudent";
 import Button from "@material-ui/core/Button";
 
@@ -54,7 +54,7 @@ const StudentsPage = (props) => {
     <div>
       <div>
         <h1>Liste des étudiants</h1>
-        <DialogFormProject
+        <DialogForm
           dialogIsOpen={dialogIsOpen}
           setDialogIsOpen={setDialogIsOpen}
         >
@@ -63,13 +63,13 @@ const StudentsPage = (props) => {
             fetchStudents={fetchStudents}
             addStudent={addStudent}
           />
-        </DialogFormProject>
+        </DialogForm>
       </div>
       <List component="nav" aria-label="main mailbox folders">
         {students.map((student) => {
           return (
             <li className="listItem" key={student.id}>
-              <Link
+              <NavLink
                 to={`/teams/${props.match.params.team_id}/students/${student.id}`}
               >
                 <ListItem button>
@@ -80,7 +80,7 @@ const StudentsPage = (props) => {
                 </ListItem>
 
                 <Divider />
-              </Link>
+              </NavLink>
               <Button
                 variant="contained"
                 color="secondary"

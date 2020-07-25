@@ -45,7 +45,7 @@ const App = () => {
       <Container maxWidth="xl">
         <Grid container spacing={2}>
           <Grid item sm={1}>
-            <DrawerNavWithRouter teams={teams} />
+            <DrawerNavWithRouter teams={teams} fetchTeams={fetchTeams} />
           </Grid>
           <Grid item sm={11}>
             <TabBarWithRouter teamPath={teamPath} />

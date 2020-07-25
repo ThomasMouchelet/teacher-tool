@@ -27,7 +27,7 @@ export default function SimpleBottomNavigation({ teamPath }) {
       onChange={(event, newValue) => {
         setValue(newValue);
       }}
-      showLabels
+      showlabels={"true"}
       className={classes.root}
     >
       <NavLink to={`${teamPath}/projects`}>

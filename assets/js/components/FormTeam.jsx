@@ -1,33 +1,28 @@
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
-import DateTimePickers from "./forms/DateTimePickers";
 import FormControl from "@material-ui/core/FormControl";
-import SelectForm from "./forms/SelectForm";
 import Button from "@material-ui/core/Button";
 
-const FormProject = (props) => {
-  const [project, setProject] = useState({
+const FormTeam = (props) => {
+  const [team, setTeam] = useState({
     name: "",
-    team: "",
     createdAt: "",
-    endingAt: "",
-    description: "",
-    status: "",
+    teacher: "",
   });
 
   const handleChange = ({ currentTarget }) => {
     const { name, value } = currentTarget;
-    setProject({
-      ...project,
+    setTeam({
+      ...team,
       [name]: value,
       createdAt: new Date(),
-      team: props.teamID,
+      teacher: "/api/teachers/3",
     });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.addProject(project);
+    props.addTeam(team);
   };
 
   return (
@@ -35,21 +30,6 @@ const FormProject = (props) => {
       <FormControl>
         <TextField label="Name" name="name" onChange={handleChange} />
       </FormControl>
-      <DateTimePickers name="endingAt" onChange={handleChange} />
-      <div>
-        <TextField
-          id="outlined-multiline-static"
-          label="Description"
-          multiline
-          rows={4}
-          variant="outlined"
-          name="description"
-          onChange={handleChange}
-        />
-      </div>
-
-      <SelectForm name="status" selectChange={handleChange} />
-
       <FormControl>
         <Button variant="contained" color="primary" type="submit">
           Envoyer
@@ -59,4 +39,4 @@ const FormProject = (props) => {
   );
 };
 
-export default FormProject;
+export default FormTeam;
