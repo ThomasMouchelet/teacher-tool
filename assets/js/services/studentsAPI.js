@@ -1,4 +1,3 @@
-import React from "react";
 import { STUDENTS_URL, TEAMS_URL } from "../config";
 import axios from "axios";
 
@@ -28,9 +27,27 @@ function create(student) {
     });
 }
 
+function deleteStudent(id) {
+  return axios.delete(`${STUDENTS_URL}/${id}`);
+}
+
+async function deleteTeamStudent(id, team_id) {
+  const student = await findOne(id);
+  const deletedTeam = `/api/teams/${team_id}`;
+  const studentTeams = [...student.teams];
+  const newTeams = studentTeams.filter((t) => t !== deletedTeam);
+
+  return axios.put(`${STUDENTS_URL}/${id}`, {
+    ...student,
+    teams: newTeams,
+  });
+}
+
 export default {
   findAll,
   findAllTeamsStudents,
   findOne,
-  create
+  create,
+  deleteTeamStudent,
+  deleteStudent,
 };

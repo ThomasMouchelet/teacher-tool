@@ -28,9 +28,14 @@ function create(project) {
     });
 }
 
+function deleteProject(id) {
+  return axios.delete(`${PROJECTS_URL}/${id}`);
+}
+
 export default {
   findAll,
   findAllTeamsProjects,
   findOne,
   create,
+  deleteProject,
 };

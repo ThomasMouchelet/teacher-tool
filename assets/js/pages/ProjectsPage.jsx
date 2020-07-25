@@ -6,12 +6,13 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import DialogFormProject from "../components/DialogFormProject";
 import ListItemText from "@material-ui/core/ListItemText";
-import FormProject from "../components/FormProject"
+import FormProject from "../components/FormProject";
+import Button from "@material-ui/core/Button";
 
 const ProjectsPage = (props) => {
   const [projects, setProjects] = useState([]);
   const { team_id } = props.match.params;
-  const [dialogIsOpen, setDialogIsOpen] = useState(false)
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   const fetchProjects = async () => {
     try {
@@ -29,10 +30,23 @@ const ProjectsPage = (props) => {
 
   const addProject = async (project) => {
     try {
-      await ProjectsAPI.create(project);
+      const response = await ProjectsAPI.create(project);
       setDialogIsOpen(false);
       fetchProjects();
-    } catch ( error) {
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const originalProjects = [...projects];
+
+    setProjects(projects.filter((p) => p.id !== id));
+
+    try {
+      const response = await ProjectsAPI.deleteProject(id);
+    } catch (error) {
+      setProjects(originalProjects);
       console.log(error);
     }
   };
@@ -41,27 +55,38 @@ const ProjectsPage = (props) => {
     <div>
       <div>
         <h1>Liste des projets</h1>
-        <DialogFormProject dialogIsOpen={dialogIsOpen} setDialogIsOpen={setDialogIsOpen}>
-          <FormProject teamID={team_id} fetchProjects={fetchProjects} addProject={addProject} />
+        <DialogFormProject
+          dialogIsOpen={dialogIsOpen}
+          setDialogIsOpen={setDialogIsOpen}
+        >
+          <FormProject
+            teamID={team_id}
+            fetchProjects={fetchProjects}
+            addProject={addProject}
+          />
         </DialogFormProject>
       </div>
       <List component="nav" aria-label="main mailbox folders">
         {projects.map((project) => {
           return (
-            <Link
-              to={`/teams/${team_id}/projects/${project.id}`}
-              key={project.id}
-            >
-              <List>
+            <li className="listItem" key={project.id}>
+              <Link to={`/teams/${team_id}/projects/${project.id}`}>
                 <ListItem button>
                   <ListItemText
                     primary={project.name}
                     secondary={moment(project.endingAt).format("DD/MM/YYYY")}
                   />
                 </ListItem>
-                <Divider />
-              </List>
-            </Link>
+              </Link>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => handleDelete(project.id)}
+              >
+                Supprimer
+              </Button>
+              <Divider />
+            </li>
           );
         })}
       </List>

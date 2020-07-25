@@ -58,7 +58,7 @@ class TeacherToolFixtures extends Fixture
                     $manager->persist($student);
                 }
 
-                for ($pro = 0; $pro < mt_rand(1, 3); $pro++) {
+                for ($pro = 0; $pro < mt_rand(1, 8); $pro++) {
                     $project = new Project();
 
                     $project->setName($faker->text($maxNbChars = 30))
