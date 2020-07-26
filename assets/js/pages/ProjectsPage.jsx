@@ -8,11 +8,16 @@ import DialogForm from "../components/DialogForm";
 import ListItemText from "@material-ui/core/ListItemText";
 import FormProject from "../components/FormProject";
 import Button from "@material-ui/core/Button";
+import { toast } from "react-toastify";
 
 const ProjectsPage = (props) => {
   const [projects, setProjects] = useState([]);
   const { team_id } = props.match.params;
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
+
+  const [errors, setErrors] = useState({
+    name: false,
+  });
 
   const fetchProjects = async () => {
     try {
@@ -20,6 +25,7 @@ const ProjectsPage = (props) => {
       setProjects(data);
     } catch (error) {
       console.log(error);
+      toast.error("Erreur lors du chargement des données !");
     }
   };
 
@@ -33,8 +39,21 @@ const ProjectsPage = (props) => {
       const response = await ProjectsAPI.create(project);
       setDialogIsOpen(false);
       fetchProjects();
-    } catch (error) {
-      console.log(error);
+    } catch ({ response }) {
+      console.log(response);
+      if (response.status === 400) {
+        toast.error("Une erreur est survenu lors de l'envoie des données");
+      }
+      const { violations } = response.data;
+      if (violations) {
+        const apiErrors = {};
+        violations.forEach(({ propertyPath, message }) => {
+          apiErrors[propertyPath] = message;
+        });
+        console.log(apiErrors);
+        setErrors(apiErrors);
+        toast.error("Des erreurs dans votre formulaire");
+      }
     }
   };
 
@@ -63,6 +82,7 @@ const ProjectsPage = (props) => {
             teamID={team_id}
             fetchProjects={fetchProjects}
             addProject={addProject}
+            errors={errors}
           />
         </DialogForm>
       </div>

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
@@ -39,30 +40,39 @@ class Project
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"projects_read","projects_subresource"})
+     * @Assert\NotBlank(message="Le nom doit être renseigné !")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères", max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"projects_read"})
+     * @Assert\DateTime(message="La date doit être au format YYYY-MM-DD")
+     * @Assert\NotBlank(message="La date d'envoi doit être renseignée")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups({"projects_read","projects_subresource"})
+     * @Assert\DateTime(message="La date doit être au format YYYY-MM-DD")
+     * @Assert\NotBlank(message="La date d'envoi doit être renseignée")
      */
     private $endingAt;
 
     /**
      * @ORM\Column(type="text")
      * @Groups({"projects_read"})
+     * @Assert\NotBlank(message="Le statut est obligatoire")
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"projects_read"})
+     * @Assert\NotBlank(message="Le statut est obligatoire")
+     * @Assert\Choice(choices={"OPEN", "CLOSE"}, message="Le statut doit être Close ou Open")
      */
     private $status;
 

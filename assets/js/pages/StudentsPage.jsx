@@ -19,6 +19,7 @@ const StudentsPage = (props) => {
       setStudents(data);
     } catch (error) {
       console.log(error);
+      toast.error("Erreur lors du chargement des données !");
     }
   };
 
@@ -47,6 +48,7 @@ const StudentsPage = (props) => {
     } catch (error) {
       setStudents(originalStudents);
       console.log(error);
+      toast.error("Une erreur est survenue");
     }
   };
 

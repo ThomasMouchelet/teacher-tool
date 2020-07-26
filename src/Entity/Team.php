@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TeamRepository::class)
@@ -16,6 +18,9 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
  *      "projects_get_subresource"={"path"="/teams/{id}/projects"},
  *      "stuents_get_subresource"={"path"="/teams/{id}/students"}
  *  },
+ *  itemOperations={"GET", "PUT", "DELETE"},
+ *  normalizationContext={"groups"={"teams_read"}},
+ *  denormalizationContext={"disable_type_enforcement"=true}
  * )
  */
 class Team
@@ -24,21 +29,31 @@ class Team
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"teams_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"teams_read"})
+     * 
+     * @Assert\NotBlank(message="Le nom doit être renseigné !")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères", max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
+     * 
+     * @Assert\Type("\DateTimeInterface")
+     * @Assert\NotBlank(message="La date d'envoi doit être renseignée")
      */
     private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Teacher::class, inversedBy="teams")
+     * 
+     * @Assert\NotBlank(message="Le teacher doit être renseigné !")
      */
     private $teacher;
 

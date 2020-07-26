@@ -13,6 +13,7 @@ const TeamsPage = () => {
       setTeams(data);
     } catch (error) {
       console.log(error.response);
+      toast.error("Erreur lors du chargement des données !");
     }
   };
 

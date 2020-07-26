@@ -11,9 +11,7 @@ function findOne(id) {
 }
 
 function create(team) {
-  return axios.post(TEAMS_URL, team).then(async (response) => {
-    return response;
-  });
+  return axios.post(TEAMS_URL, team).then((response) => response.data);
 }
 
 export default {

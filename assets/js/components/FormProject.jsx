@@ -4,6 +4,7 @@ import DateTimePickers from "./forms/DateTimePickers";
 import FormControl from "@material-ui/core/FormControl";
 import SelectForm from "./forms/SelectForm";
 import Button from "@material-ui/core/Button";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const FormProject = (props) => {
   const [project, setProject] = useState({
@@ -32,8 +33,16 @@ const FormProject = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <FormControl>
-        <TextField label="Name" name="name" onChange={handleChange} />
+      <FormControl errors={props.errors.name ? true : false}>
+        <TextField
+          label="Name"
+          name="name"
+          errors={props.errors.name ? true : false}
+          onChange={handleChange}
+        />
+        <FormHelperText id="component-error-text">
+          {props.errors.name}
+        </FormHelperText>
       </FormControl>
       <DateTimePickers name="endingAt" onChange={handleChange} />
       <div>

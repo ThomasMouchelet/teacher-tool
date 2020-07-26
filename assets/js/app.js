@@ -11,6 +11,8 @@ import TabBar from "./components/TabBar";
 import TeamsAPI from "./services/teamsAPI";
 import StudentsPage from "./pages/StudentsPage";
 import StudentPage from "./pages/StudentPage";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const DrawerNavWithRouter = withRouter(DrawerNav);
@@ -41,44 +43,47 @@ const App = () => {
   };
 
   return (
-    <HashRouter>
-      <Container maxWidth="xl">
-        <Grid container spacing={2}>
-          <Grid item sm={1}>
-            <DrawerNavWithRouter teams={teams} fetchTeams={fetchTeams} />
+    <>
+      <HashRouter>
+        <Container maxWidth="xl">
+          <Grid container spacing={2}>
+            <Grid item sm={1}>
+              <DrawerNavWithRouter teams={teams} fetchTeams={fetchTeams} />
+            </Grid>
+            <Grid item sm={11}>
+              <TabBarWithRouter teamPath={teamPath} />
+              <Switch>
+                <Route
+                  path="/teams/:team_id/projects/:id"
+                  render={(props) => (
+                    <ProjectPage {...props} teamPath={teamPath} />
+                  )}
+                />
+                <Route
+                  path="/teams/:team_id/students/:id"
+                  render={(props) => (
+                    <StudentPage {...props} teamPath={teamPath} />
+                  )}
+                />
+                <Route
+                  path="/teams/:team_id/projects"
+                  render={(props) => (
+                    <ProjectsPage {...props} updateTeamPath={updateTeamPath} />
+                  )}
+                />
+                <Route
+                  path="/teams/:team_id/students"
+                  render={(props) => (
+                    <StudentsPage {...props} updateTeamPath={updateTeamPath} />
+                  )}
+                />
+              </Switch>
+            </Grid>
           </Grid>
-          <Grid item sm={11}>
-            <TabBarWithRouter teamPath={teamPath} />
-            <Switch>
-              <Route
-                path="/teams/:team_id/projects/:id"
-                render={(props) => (
-                  <ProjectPage {...props} teamPath={teamPath} />
-                )}
-              />
-              <Route
-                path="/teams/:team_id/students/:id"
-                render={(props) => (
-                  <StudentPage {...props} teamPath={teamPath} />
-                )}
-              />
-              <Route
-                path="/teams/:team_id/projects"
-                render={(props) => (
-                  <ProjectsPage {...props} updateTeamPath={updateTeamPath} />
-                )}
-              />
-              <Route
-                path="/teams/:team_id/students"
-                render={(props) => (
-                  <StudentsPage {...props} updateTeamPath={updateTeamPath} />
-                )}
-              />
-            </Switch>
-          </Grid>
-        </Grid>
-      </Container>
-    </HashRouter>
+        </Container>
+      </HashRouter>
+      <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
+    </>
   );
 };
 
