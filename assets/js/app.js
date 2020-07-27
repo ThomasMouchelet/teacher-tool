@@ -78,7 +78,12 @@ const App = () => {
                     <StudentsPage {...props} updateTeamPath={updateTeamPath} />
                   )}
                 />
-                <Route path="/teams/:team_id" component={TeamPage}></Route>
+                <Route
+                  path="/teams/:team_id"
+                  render={(props) => (
+                    <TeamPage {...props} fetchTeams={fetchTeams} />
+                  )}
+                ></Route>
               </Switch>
             </Grid>
           </Grid>

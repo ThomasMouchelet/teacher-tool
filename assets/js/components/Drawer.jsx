@@ -17,7 +17,6 @@ import FormTeam from "./FormTeam";
 import DialogForm from "../components/DialogForm";
 import { NavLink } from "react-router-dom";
 import TeamsAPI from "../services/teamsAPI";
-import { toast } from "react-toastify";
 
 const drawerWidth = 240;
 
@@ -57,32 +56,6 @@ export default function MiniDrawer(props) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
-  const [errors, setErrors] = useState({
-    name: false,
-  });
-
-  const addTeam = async (team) => {
-    console.log(team);
-    try {
-      const response = await TeamsAPI.create(team);
-      setDialogIsOpen(false);
-      props.fetchTeams();
-    } catch ({ response }) {
-      if (response.status === 400) {
-        toast.error("Une erreur est survenu lors de l'envoie des données");
-      }
-      const { violations } = response.data;
-      if (violations) {
-        const apiErrors = {};
-        violations.forEach(({ propertyPath, message }) => {
-          apiErrors[propertyPath] = message;
-        });
-        console.log(apiErrors);
-        setErrors(apiErrors);
-        toast.error("Des erreurs dans votre formulaire");
-      }
-    }
-  };
 
   return (
     <div className={classes.root}>
@@ -126,7 +99,11 @@ export default function MiniDrawer(props) {
           dialogIsOpen={dialogIsOpen}
           setDialogIsOpen={setDialogIsOpen}
         >
-          <FormTeam addTeam={addTeam} error={errors.name} />
+          <FormTeam
+            team_id="new"
+            fetchTeams={props.fetchTeams}
+            setDialogIsOpen={setDialogIsOpen}
+          />
         </DialogForm>
       </Drawer>
     </div>

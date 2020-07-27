@@ -14,8 +14,18 @@ function create(team) {
   return axios.post(TEAMS_URL, team).then((response) => response.data);
 }
 
+function update(id, team) {
+  return axios.put(TEAMS_URL + "/" + id, team);
+}
+
+function deleteTeam(id) {
+  return axios.delete(TEAMS_URL + "/" + id);
+}
+
 export default {
   findAll,
   findOne,
   create,
+  update,
+  deleteTeam,
 };
