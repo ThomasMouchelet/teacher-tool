@@ -12,9 +12,7 @@ a:hover {
 .MuiBottomNavigationAction-label.MuiBottomNavigationAction-iconOnly {
   opacity: 1 !important;
 }
-.makeStyles-root-8 {
-  width: 100% !important;
-}
+
 .MuiFab-primary {
   background-color: #515151 !important;
 }

@@ -53,7 +53,6 @@ const FormTeam = (props) => {
       }
       props.fetchTeams();
     } catch ({ response }) {
-      console.log(response);
       const { violations } = response.data;
 
       if (violations) {
@@ -87,7 +86,7 @@ const FormTeam = (props) => {
           label="Name"
           name="name"
           defaultValue={team.name}
-          value={team.name}
+          value={team.name || ""}
           onChange={handleChange}
           error={errors.name ? true : false}
         />

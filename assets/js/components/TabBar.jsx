@@ -14,7 +14,7 @@ import { AiTwotoneSetting } from "react-icons/ai";
 
 const useStyles = makeStyles({
   root: {
-    width: 500,
+    width: "100%",
   },
 });
 
