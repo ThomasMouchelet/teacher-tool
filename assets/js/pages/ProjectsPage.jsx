@@ -62,11 +62,20 @@ const ProjectsPage = (props) => {
 
     setProjects(projects.filter((p) => p.id !== id));
 
-    try {
-      const response = await ProjectsAPI.deleteProject(id);
-    } catch (error) {
+    // TODO : Optimiser le message de confirmation
+    const confirm = window.confirm(
+      "Are you sure you wish to delete this item?"
+    );
+
+    if (confirm) {
+      try {
+        const response = await ProjectsAPI.deleteProject(id);
+      } catch (error) {
+        setProjects(originalProjects);
+        console.log(error);
+      }
+    } else {
       setProjects(originalProjects);
-      console.log(error);
     }
   };
 

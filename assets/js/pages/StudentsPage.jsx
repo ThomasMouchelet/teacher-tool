@@ -43,12 +43,23 @@ const StudentsPage = (props) => {
     const originalStudents = [...students];
     setStudents(students.filter((s) => s.id !== student.id));
 
-    try {
-      const response = await StudentsAPI.deleteTeamStudent(student.id, team_id);
-    } catch (error) {
+    // TODO : Optimiser le message de confirmation
+    const confirm = window.confirm(
+      "Are you sure you wish to delete this item?"
+    );
+    if (confirm) {
+      try {
+        const response = await StudentsAPI.deleteTeamStudent(
+          student.id,
+          team_id
+        );
+      } catch (error) {
+        setStudents(originalStudents);
+        console.log(error);
+        toast.error("Une erreur est survenue");
+      }
+    } else {
       setStudents(originalStudents);
-      console.log(error);
-      toast.error("Une erreur est survenue");
     }
   };
 

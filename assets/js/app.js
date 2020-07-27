@@ -13,6 +13,7 @@ import StudentsPage from "./pages/StudentsPage";
 import StudentPage from "./pages/StudentPage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import TeamPage from "./pages/TeamPage";
 
 const App = () => {
   const DrawerNavWithRouter = withRouter(DrawerNav);
@@ -77,6 +78,7 @@ const App = () => {
                     <StudentsPage {...props} updateTeamPath={updateTeamPath} />
                   )}
                 />
+                <Route path="/teams/:team_id" component={TeamPage}></Route>
               </Switch>
             </Grid>
           </Grid>

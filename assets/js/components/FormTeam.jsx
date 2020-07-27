@@ -12,7 +12,7 @@ const FormTeam = (props) => {
     setTeam({
       ...team,
       [name]: value,
-      teacher: "/api/teachers/3",
+      teacher: "/api/teachers/42",
     });
   };
 

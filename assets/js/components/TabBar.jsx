@@ -10,6 +10,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { BsPeopleFill } from "react-icons/bs";
 import { AiOutlineProject } from "react-icons/ai";
 import { AiOutlineNotification } from "react-icons/ai";
+import { AiTwotoneSetting } from "react-icons/ai";
 
 const useStyles = makeStyles({
   root: {
@@ -38,6 +39,9 @@ export default function SimpleBottomNavigation({ teamPath }) {
       </NavLink>
       <NavLink to={`${teamPath}/students`}>
         <BottomNavigationAction label="Etudiants" icon={<BsPeopleFill />} />
+      </NavLink>
+      <NavLink to={`${teamPath}`}>
+        <BottomNavigationAction label="Setting" icon={<AiTwotoneSetting />} />
       </NavLink>
     </BottomNavigation>
   );
