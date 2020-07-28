@@ -11,6 +11,7 @@ import { BsPeopleFill } from "react-icons/bs";
 import { AiOutlineProject } from "react-icons/ai";
 import { AiOutlineNotification } from "react-icons/ai";
 import { AiTwotoneSetting } from "react-icons/ai";
+import { RiProfileLine } from "react-icons/ri";
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +43,9 @@ export default function SimpleBottomNavigation({ teamPath }) {
       </NavLink>
       <NavLink to={`${teamPath}`}>
         <BottomNavigationAction label="Setting" icon={<AiTwotoneSetting />} />
+      </NavLink>
+      <NavLink to="/">
+        <BottomNavigationAction label="Profil" icon={<RiProfileLine />} />
       </NavLink>
     </BottomNavigation>
   );
