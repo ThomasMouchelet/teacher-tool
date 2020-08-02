@@ -93,7 +93,7 @@ class Teacher implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -118,9 +118,9 @@ class Teacher implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
-        return $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
