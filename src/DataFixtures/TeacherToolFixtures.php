@@ -22,6 +22,7 @@ class TeacherToolFixtures extends Fixture
         $this->encoder = $encoder;
     }
 
+
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
