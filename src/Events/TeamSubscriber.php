@@ -8,14 +8,17 @@ use ApiPlatform\Core\EventListener\EventPriorities;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use App\Repository\TeamRepository;
 use App\Entity\Team;
+use Symfony\Component\Security\Core\Security;
 
 class TeamSubscriber implements EventSubscriberInterface
 {
     private $repository;
+    private $security;
 
-    public function __construct(TeamRepository $repository)
+    public function __construct(TeamRepository $repository, Security $security)
     {
         $this->repository = $repository;
+        $this->security = $security;
     }
 
     public static function getSubscribedEvents()
@@ -31,7 +34,7 @@ class TeamSubscriber implements EventSubscriberInterface
         $method = $event->getRequest()->getMethod();
 
         if ($team instanceof Team && $method === "POST") {
-            // TODO : A déplacer dans une classe dédiée
+            $team->setUser($this->security->getUser());
             if (empty($team->getCreatedAt())) {
                 $team->setCreatedAt(new \DateTime());
             }

@@ -51,11 +51,11 @@ class Team
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Teacher::class, inversedBy="teams")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="teams")
      * 
-     * @Assert\NotBlank(message="Le teacher doit être renseigné !")
+     * @Assert\NotBlank(message="Le user doit être renseigné !")
      */
-    private $teacher;
+    private $user;
 
     /**
      * @ORM\ManyToMany(targetEntity=Student::class, mappedBy="teams")
@@ -104,14 +104,14 @@ class Team
         return $this;
     }
 
-    public function getTeacher(): ?Teacher
+    public function getUser(): ?User
     {
-        return $this->teacher;
+        return $this->user;
     }
 
-    public function setTeacher(?Teacher $teacher): self
+    public function setUser(?User $user): self
     {
-        $this->teacher = $teacher;
+        $this->user = $user;
 
         return $this;
     }

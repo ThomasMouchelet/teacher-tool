@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { GoChevronLeft } from "react-icons/go";
 import StudentsAPI from "../services/studentsAPI";
+import TeamPathContext from "../contexts/TeamPathContext";
 
 const StudentPage = (props) => {
   const { id } = props.match.params;
   const [student, setStudent] = useState({});
+  const { teamPath } = useContext(TeamPathContext);
 
   const getStudent = async () => {
     try {
@@ -23,7 +25,7 @@ const StudentPage = (props) => {
 
   return (
     <>
-      <Link to={`${props.teamPath}/students`}>
+      <Link to={`${teamPath}/students`}>
         <Button variant="contained" color="primary">
           <GoChevronLeft />
           Retour aux etudiants

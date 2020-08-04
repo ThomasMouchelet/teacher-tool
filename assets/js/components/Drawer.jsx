@@ -99,11 +99,7 @@ export default function MiniDrawer(props) {
           dialogIsOpen={dialogIsOpen}
           setDialogIsOpen={setDialogIsOpen}
         >
-          <FormTeam
-            team_id="new"
-            fetchTeams={props.fetchTeams}
-            setDialogIsOpen={setDialogIsOpen}
-          />
+          <FormTeam team_id="new" setDialogIsOpen={setDialogIsOpen} />
         </DialogForm>
       </Drawer>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
@@ -6,6 +6,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import { toast } from "react-toastify";
 import TeamsAPI from "../services/teamsAPI";
 import { useHistory } from "react-router-dom";
+import TeamPathContext from "../contexts/TeamPathContext";
 
 const FormTeam = (props) => {
   const [team, setTeam] = useState({});
@@ -14,6 +15,7 @@ const FormTeam = (props) => {
     name: "",
   });
   const history = useHistory();
+  const { setTeamPath } = useContext(TeamPathContext);
 
   const getTeam = async () => {
     try {
@@ -36,7 +38,7 @@ const FormTeam = (props) => {
     setTeam({
       ...team,
       [name]: value,
-      teacher: "/api/teachers/42",
+      teacher: "/api/teachers/4",
     });
   };
 
@@ -47,11 +49,12 @@ const FormTeam = (props) => {
         await TeamsAPI.update(team.id, team);
         toast.success("Modifié avec succès");
       } else {
-        await TeamsAPI.create(team);
+        const teamAdded = await TeamsAPI.create(team);
+        console.log(teamAdded);
         props.setDialogIsOpen(false);
+        setTeamPath(`/teams/${teamAdded.id}`);
         toast.success("Ajouté avec succès");
       }
-      props.fetchTeams();
     } catch ({ response }) {
       const { violations } = response.data;
 
@@ -71,7 +74,6 @@ const FormTeam = (props) => {
     try {
       await TeamsAPI.deleteTeam(team.id);
       toast.success("La team a bien été supprimée");
-      props.fetchTeams();
       history.push("/");
     } catch (error) {
       toast.error("Une erreur est survenue");

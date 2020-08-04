@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import StudentsAPI from "../services/studentsAPI";
 import List from "@material-ui/core/List";
 import { ListItem, Divider } from "@material-ui/core";
@@ -7,11 +7,14 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DialogForm from "../components/DialogForm";
 import FormStudent from "../components/FormStudent";
 import Button from "@material-ui/core/Button";
+import TeamPathContext from "../contexts/TeamPathContext";
+import { toast } from "react-toastify";
 
 const StudentsPage = (props) => {
   const [students, setStudents] = useState([]);
   const { team_id } = props.match.params;
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  const { setTeamPath } = useContext(TeamPathContext);
 
   const fetchStudents = async () => {
     try {
@@ -25,7 +28,7 @@ const StudentsPage = (props) => {
 
   useEffect(() => {
     fetchStudents();
-    props.updateTeamPath(team_id);
+    setTeamPath(`/teams/${team_id}`);
   }, [team_id]);
 
   const addStudent = async (student) => {

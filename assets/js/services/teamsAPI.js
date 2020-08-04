@@ -22,10 +22,17 @@ function deleteTeam(id) {
   return axios.delete(TEAMS_URL + "/" + id);
 }
 
+function getFirstTeam() {
+  return axios
+    .get(`${TEAMS_URL}`)
+    .then((response) => response.data["hydra:member"][0]);
+}
+
 export default {
   findAll,
   findOne,
   create,
   update,
   deleteTeam,
+  getFirstTeam,
 };

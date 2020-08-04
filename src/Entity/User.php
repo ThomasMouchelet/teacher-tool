@@ -58,9 +58,46 @@ class User implements UserInterface
      */
     private $dbroles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="teacher")
+     */
+    private $teams;
+
     public function __construct()
     {
         $this->dbroles = new ArrayCollection();
+        $this->teams = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->contains($team)) {
+            $this->teams->removeElement($team);
+            // set the owning side to null (unless already changed)
+            if ($team->getUser() === $this) {
+                $team->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getId(): ?int

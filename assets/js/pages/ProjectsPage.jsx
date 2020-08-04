@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ProjectsAPI from "../services/projectsAPI";
 import List from "@material-ui/core/List";
 import { ListItem, Divider } from "@material-ui/core";
@@ -9,11 +9,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 import FormProject from "../components/FormProject";
 import Button from "@material-ui/core/Button";
 import { toast } from "react-toastify";
+import TeamPathContext from "../contexts/TeamPathContext";
 
 const ProjectsPage = (props) => {
   const [projects, setProjects] = useState([]);
   const { team_id } = props.match.params;
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  const { setTeamPath } = useContext(TeamPathContext);
 
   const [errors, setErrors] = useState({
     name: false,
@@ -31,7 +33,7 @@ const ProjectsPage = (props) => {
 
   useEffect(() => {
     fetchProjects();
-    props.updateTeamPath(team_id);
+    setTeamPath(`/teams/${team_id}`);
   }, [team_id]);
 
   const addProject = async (project) => {

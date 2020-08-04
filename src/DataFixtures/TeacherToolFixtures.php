@@ -12,6 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\VarDumper\Cloner\Data;
+use App\Entity\User;
 
 class TeacherToolFixtures extends Fixture
 {
@@ -28,21 +29,20 @@ class TeacherToolFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         for ($t = 0; $t < 1; $t++) {
-            $teacher = new Teacher();
-            $hash = $this->encoder->encodePassword($teacher, "password");
+            $user = new User();
+            $hash = $this->encoder->encodePassword($user, "password");
 
-            $teacher->setFirstName($faker->firstName())
-                ->setLastName($faker->lastName())
+            $user
                 ->setEmail($faker->email())
                 ->setPassword($hash);
 
-            $manager->persist($teacher);
+            $manager->persist($user);
 
             for ($te = 0; $te < mt_rand(1, 3); $te++) {
                 $team = new Team();
                 $team->setName($faker->company())
                     ->setCreatedAt($faker->dateTimeBetween('-6 months'))
-                    ->setTeacher($teacher);
+                    ->setUser($user);
 
                 $manager->persist($team);
 
