@@ -38,6 +38,7 @@ const App = () => {
 
   useEffect(() => {
     AuthAPI.setup();
+    AuthAPI.isAuthenticated();
     fetchTeams();
   }, [teamPath]);
 
@@ -46,7 +47,7 @@ const App = () => {
       const data = await TeamsAPI.findAll();
       setTeams(data);
       if (!teamPath) {
-        updateTeamPath(data[0].id);
+        updateTeamPath(teams[0].id);
       }
     } catch (error) {
       console.log(error.response);
@@ -102,6 +103,7 @@ const App = () => {
                     component={StudentsPage}
                   />
                   <PrivateRoute path="/teams/:team_id" component={TeamPage} />
+                  <Route path="*" exact={true} component={LoginPage} />
                 </Switch>
               </Grid>
             </Grid>

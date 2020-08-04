@@ -46,14 +46,13 @@ const UserPage = () => {
     }
 
     try {
-      await UsersAPI.register(user);
+      const userPut = await UsersAPI.update(user.id, user);
+      console.log(userPut);
+      // TODO : Refresh tokken
       setErrors({});
 
       // TODO : Flash success
-      toast.success(
-        "Vous êtes désormais inscrit, vous pouvez vous connecter !"
-      );
-      history.replace("/login");
+      toast.success("Modifications effectuées avec succès !");
     } catch (error) {
       const { violations } = error.response.data;
 
