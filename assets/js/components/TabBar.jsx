@@ -46,7 +46,7 @@ export default function SimpleBottomNavigation() {
       <NavLink to={`${teamPath}`}>
         <BottomNavigationAction label="Setting" icon={<AiTwotoneSetting />} />
       </NavLink>
-      <NavLink to="/">
+      <NavLink to="/users/6">
         <BottomNavigationAction label="Profil" icon={<RiProfileLine />} />
       </NavLink>
     </BottomNavigation>

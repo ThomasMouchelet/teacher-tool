@@ -21,6 +21,7 @@ import StudentsPage from "./pages/StudentsPage";
 import StudentPage from "./pages/StudentPage";
 import TeamPage from "./pages/TeamPage";
 import LoginPage from "./pages/LoginPage";
+import UserPage from "./pages/UserPage";
 
 import Container from "@material-ui/core/Container";
 import Grid, { GridSpacing } from "@material-ui/core/Grid";
@@ -82,6 +83,8 @@ const App = () => {
                     path="/register"
                     render={(props) => <RegisterPage {...props} />}
                   />
+
+                  <PrivateRoute path="/users/:id" component={UserPage} />
                   <PrivateRoute
                     path="/teams/:team_id/projects/:id"
                     component={ProjectPage}
