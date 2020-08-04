@@ -32,7 +32,8 @@ class TeacherToolFixtures extends Fixture
             $user = new User();
             $hash = $this->encoder->encodePassword($user, "password");
 
-            $user
+            $user->setFirstName($faker->firstName())
+                ->setLastName($faker->lastName)
                 ->setEmail($faker->email())
                 ->setPassword($hash);
 

@@ -1,11 +1,16 @@
 import React, { useState, useContext } from "react";
-import AuthAPI from "../services/authAPI";
+
 import AuthContext from "../contexts/AuthContext";
+import TeamPathContext from "../contexts/TeamPathContext";
+
+import AuthAPI from "../services/authAPI";
+import TeamsAPI from "../services/teamsAPI";
+
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
-import TeamPathContext from "../contexts/TeamPathContext";
-import teamsAPI from "../services/teamsAPI";
 
 const LoginPage = ({ history }) => {
   const { setIsAuthenticated } = useContext(AuthContext);
@@ -31,7 +36,7 @@ const LoginPage = ({ history }) => {
       await AuthAPI.authenticate(credentials);
       setError("");
       setIsAuthenticated(true);
-      const firstTeam = await teamsAPI.getFirstTeam();
+      const firstTeam = await TeamsAPI.getFirstTeam();
       setTeamPath(`/teams/${firstTeam.id}`);
       history.replace("/");
     } catch (error) {
@@ -69,6 +74,9 @@ const LoginPage = ({ history }) => {
             Je me connecte
           </button>
         </div>
+        <Link to="/register" className="btn btn-link">
+          Créer un compte
+        </Link>
       </form>
     </>
   );

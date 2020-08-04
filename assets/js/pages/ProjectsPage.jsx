@@ -32,8 +32,8 @@ const ProjectsPage = (props) => {
   };
 
   useEffect(() => {
-    fetchProjects();
     setTeamPath(`/teams/${team_id}`);
+    fetchProjects();
   }, [team_id]);
 
   const addProject = async (project) => {

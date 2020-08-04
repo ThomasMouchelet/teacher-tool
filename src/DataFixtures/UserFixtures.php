@@ -22,27 +22,27 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('fr_FR');
+        // $faker = Factory::create('fr_FR');
 
-        $roleadmin = new Role();
-        $roleadmin->setType("ROLE_ADMIN");
-        $manager->persist($roleadmin);
+        // $roleadmin = new Role();
+        // $roleadmin->setType("ROLE_ADMIN");
+        // $manager->persist($roleadmin);
 
-        $roleuser = new Role();
-        $roleuser->setType("ROLE_USER");
-        $manager->persist($roleuser);
+        // $roleuser = new Role();
+        // $roleuser->setType("ROLE_USER");
+        // $manager->persist($roleuser);
 
-        for ($u = 0; $u < 3; $u++) {
+        // for ($u = 0; $u < 3; $u++) {
 
-            $user = new User();
-            $hash = $this->encoder->encodePassword($user, "password");
+        //     $user = new User();
+        //     $hash = $this->encoder->encodePassword($user, "password");
 
-            $user->setEmail($faker->email())
-                ->setPassword($hash)
-                ->addDbrole($roleadmin);
+        //     $user->setEmail($faker->email())
+        //         ->setPassword($hash)
+        //         ->addDbrole($roleadmin);
 
-            $manager->persist($user);
-        }
-        $manager->flush();
+        //     $manager->persist($user);
+        // }
+        // $manager->flush();
     }
 }
