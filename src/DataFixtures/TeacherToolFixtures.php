@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Delivrable;
 use App\Entity\Project;
+use App\Entity\Role;
 use App\Entity\Student;
 use App\Entity\Teacher;
 use App\Entity\Team;
@@ -28,6 +29,16 @@ class TeacherToolFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
+        $teacherRole = new Role();
+        $teacherRole->setType("ROLE_TEACHER");
+
+        $studentRole = new Role();
+        $studentRole->setType("ROLE_STUDENT");
+
+        $manager->persist($teacherRole);
+        $manager->persist($studentRole);
+
+
         for ($t = 0; $t < 1; $t++) {
             $user = new User();
             $hash = $this->encoder->encodePassword($user, "password");
@@ -35,7 +46,8 @@ class TeacherToolFixtures extends Fixture
             $user->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName)
                 ->setEmail($faker->email())
-                ->setPassword($hash);
+                ->setPassword($hash)
+                ->addDbrole($teacherRole);
 
             $manager->persist($user);
 
@@ -48,14 +60,14 @@ class TeacherToolFixtures extends Fixture
                 $manager->persist($team);
 
                 for ($stu = 0; $stu < mt_rand(5, 12); $stu++) {
-                    $student = new Student();
+                    $student = new User();
                     $hash = $this->encoder->encodePassword($student, "password");
 
                     $student->setFirstName($faker->firstName())
-                        ->setLastName($faker->lastName())
+                        ->setLastName($faker->lastName)
                         ->setEmail($faker->email())
                         ->setPassword($hash)
-                        ->addTeam($team);
+                        ->addDbrole($studentRole);
 
                     $manager->persist($student);
                 }
