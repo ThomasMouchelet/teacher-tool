@@ -82,15 +82,8 @@ class Project
      */
     private $team;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Delivrable::class, mappedBy="project")
-     * @Groups({"projects_read"})
-     */
-    private $delivrables;
-
     public function __construct()
     {
-        $this->delivrables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,37 +159,6 @@ class Project
     public function setTeam(?Team $team): self
     {
         $this->team = $team;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Delivrable[]
-     */
-    public function getDelivrables(): Collection
-    {
-        return $this->delivrables;
-    }
-
-    public function addDelivrable(Delivrable $delivrable): self
-    {
-        if (!$this->delivrables->contains($delivrable)) {
-            $this->delivrables[] = $delivrable;
-            $delivrable->setProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDelivrable(Delivrable $delivrable): self
-    {
-        if ($this->delivrables->contains($delivrable)) {
-            $this->delivrables->removeElement($delivrable);
-            // set the owning side to null (unless already changed)
-            if ($delivrable->getProject() === $this) {
-                $delivrable->setProject(null);
-            }
-        }
 
         return $this;
     }

@@ -17,7 +17,10 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
  * @ApiResource(
  *  subresourceOperations={
  *      "api_roles_users_get_subresource"={
- *          "normalization_context"={"groups"={"users_subresource"}}
+ *          "normalization_context"={"groups"={"role_subresource"}}
+ *      },
+ *      "api_teams_users_get_subresource"={
+ *          "normalization_context"={"groups"={"team_subresource"}}
  *      }
  *  },
  *  normalizationContext={
@@ -31,19 +34,19 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"users_read", "users_subresource"})
+     * @Groups({"users_read", "role_subresource","team_subresource"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"users_read", "users_subresource"})
+     * @Groups({"users_read", "role_subresource","team_subresource"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"users_read", "users_subresource"})
+     * @Groups({"users_read", "users_subresource","team_subresource"})
      */
     private $roles = [];
 
@@ -58,22 +61,24 @@ class User implements UserInterface
      */
     private $dbroles;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="teacher")
-     */
-    private $teams;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"users_read", "users_subresource"})
+     * @Groups({"users_read", "role_subresource","team_subresource"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"users_read", "users_subresource"})
+     * @Groups({"users_read", "role_subresource","team_subresource"})
      */
     private $lastName;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Team::class, mappedBy="users")
+     * @Groups({"users_read", "role_subresource"})
+     */
+    private $teams;
 
     public function __construct()
     {
@@ -81,36 +86,6 @@ class User implements UserInterface
         $this->teams = new ArrayCollection();
     }
 
-    /**
-     * @return Collection|Team[]
-     */
-    public function getTeams(): Collection
-    {
-        return $this->teams;
-    }
-
-    public function addTeam(Team $team): self
-    {
-        if (!$this->teams->contains($team)) {
-            $this->teams[] = $team;
-            $team->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTeam(Team $team): self
-    {
-        if ($this->teams->contains($team)) {
-            $this->teams->removeElement($team);
-            // set the owning side to null (unless already changed)
-            if ($team->getUser() === $this) {
-                $team->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getId(): ?int
     {
@@ -250,6 +225,34 @@ class User implements UserInterface
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->contains($team)) {
+            $this->teams->removeElement($team);
+            $team->removeUser($this);
+        }
 
         return $this;
     }

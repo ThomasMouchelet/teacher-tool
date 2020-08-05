@@ -1,9 +1,5 @@
 security:
   encoders:
-    App\Entity\Teacher:
-      algorithm: auto
-    App\Entity\Student:
-      algorithm: auto
     App\Entity\User:
       algorithm: auto
 

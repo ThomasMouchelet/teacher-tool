@@ -16,9 +16,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *  subresourceOperations={
  *      "projects_get_subresource"={"path"="/teams/{id}/projects"},
- *      "stuents_get_subresource"={"path"="/teams/{id}/students"}
+ *      "users_get_subresource"={"path"="/teams/{id}/users"}
  *  },
- *  itemOperations={"GET", "PUT", "DELETE"},
+ *  itemOperations={"GET", "PUT", "DELETE", "students"={
+ *       "method"="get", 
+ *       "path"="/teams/{id}/students", 
+ *       "controller"="App\Controller\TeamGetStudentsController", 
+ *       "swagger_context"={
+ *          "summary"="Get all students",
+ *          "description"="Get all students"
+ *       },
+ *       "normalization_context"={"groups"={"team_subresource"}},
+ *     }
+ *  },
  *  normalizationContext={"groups"={"teams_read"}},
  *  denormalizationContext={"disable_type_enforcement"=true}
  * )
@@ -50,18 +60,6 @@ class Team
      */
     private $createdAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="teams")
-     * 
-     * @Assert\NotBlank(message="Le user doit être renseigné !")
-     */
-    private $user;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Student::class, mappedBy="teams")
-     * @ApiSubresource
-     */
-    private $students;
 
     /**
      * @ORM\OneToMany(targetEntity=Project::class, mappedBy="team")
@@ -69,10 +67,16 @@ class Team
      */
     private $projects;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="teams")
+     * @ApiSubresource
+     */
+    private $users;
+
     public function __construct()
     {
-        $this->students = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -104,46 +108,6 @@ class Team
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Student[]
-     */
-    public function getStudents(): Collection
-    {
-        return $this->students;
-    }
-
-    public function addStudent(Student $student): self
-    {
-        if (!$this->students->contains($student)) {
-            $this->students[] = $student;
-            $student->addTeam($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStudent(Student $student): self
-    {
-        if ($this->students->contains($student)) {
-            $this->students->removeElement($student);
-            $student->removeTeam($this);
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Project[]
      */
@@ -170,6 +134,32 @@ class Team
             if ($project->getTeam() === $this) {
                 $project->setTeam(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
         }
 
         return $this;

@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import StudentsAPI from "../services/studentsAPI";
-import List from "@material-ui/core/List";
-import { ListItem, Divider } from "@material-ui/core";
+import TeamPathContext from "../contexts/TeamPathContext";
 import { NavLink } from "react-router-dom";
+
+import UsersAPI from "../services/usersAPI";
+
 import ListItemText from "@material-ui/core/ListItemText";
+import { ListItem, Divider } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import List from "@material-ui/core/List";
+
 import DialogForm from "../components/DialogForm";
 import FormStudent from "../components/FormStudent";
-import Button from "@material-ui/core/Button";
-import TeamPathContext from "../contexts/TeamPathContext";
+
 import { toast } from "react-toastify";
 
 const StudentsPage = (props) => {
@@ -18,7 +22,7 @@ const StudentsPage = (props) => {
 
   const fetchStudents = async () => {
     try {
-      const data = await StudentsAPI.findAllTeamsStudents(team_id);
+      const data = await UsersAPI.findAllTeamsStudents(team_id);
       setStudents(data);
     } catch (error) {
       console.log(error);
@@ -33,7 +37,7 @@ const StudentsPage = (props) => {
 
   const addStudent = async (student) => {
     try {
-      const response = await StudentsAPI.create(student);
+      const response = await UsersAPI.create(student);
       console.log(response);
       setDialogIsOpen(false);
       fetchStudents();
@@ -52,10 +56,7 @@ const StudentsPage = (props) => {
     );
     if (confirm) {
       try {
-        const response = await StudentsAPI.deleteTeamStudent(
-          student.id,
-          team_id
-        );
+        const response = await UsersAPI.deleteUser(student.id, team_id);
       } catch (error) {
         setStudents(originalStudents);
         console.log(error);

@@ -5,8 +5,6 @@ namespace App\DataFixtures;
 use App\Entity\Delivrable;
 use App\Entity\Project;
 use App\Entity\Role;
-use App\Entity\Student;
-use App\Entity\Teacher;
 use App\Entity\Team;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -55,7 +53,7 @@ class TeacherToolFixtures extends Fixture
                 $team = new Team();
                 $team->setName($faker->company())
                     ->setCreatedAt($faker->dateTimeBetween('-6 months'))
-                    ->setUser($user);
+                    ->addUser($user);
 
                 $manager->persist($team);
 
@@ -67,7 +65,8 @@ class TeacherToolFixtures extends Fixture
                         ->setLastName($faker->lastName)
                         ->setEmail($faker->email())
                         ->setPassword($hash)
-                        ->addDbrole($studentRole);
+                        ->addDbrole($studentRole)
+                        ->addTeam($team);
 
                     $manager->persist($student);
                 }
@@ -84,20 +83,20 @@ class TeacherToolFixtures extends Fixture
 
                     $manager->persist($project);
 
-                    $studentsInTeam = $team->getStudents();
+                    // $studentsInTeam = $studentRole->getUsers();
 
-                    foreach ($studentsInTeam as $studentIt) {
-                        $delivrable = new Delivrable();
+                    // foreach ($studentsInTeam as $studentIt) {
+                    //     $delivrable = new Delivrable();
 
-                        $delivrable->setName($studentIt->getFirstName() . "-" . $studentIt->getLastName())
-                            ->setUploadedAt($faker->dateTimeBetween($startDate = $project->getCreatedAt(), $endDate = 'now', $timezone = null))
-                            ->setPath("http://localhost/uploads/name.zip")
-                            ->setProject($project)
-                            ->setStudent($studentIt)
-                            ->setStatus("UPLOADED");
+                    //     $delivrable->setName($studentIt->getFirstName() . "-" . $studentIt->getLastName())
+                    //         ->setUploadedAt($faker->dateTimeBetween($startDate = $project->getCreatedAt(), $endDate = 'now', $timezone = null))
+                    //         ->setPath("http://localhost/uploads/name.zip")
+                    //         ->setProject($project)
+                    //         ->setStudent($studentIt)
+                    //         ->setStatus("UPLOADED");
 
-                        $manager->persist($delivrable);
-                    }
+                    //     $manager->persist($delivrable);
+                    // }
                 }
             }
         }

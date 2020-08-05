@@ -8,7 +8,7 @@ function findAll() {
 }
 function findAllTeamsStudents(id) {
   return axios
-    .get(`${TEAMS_URL}/${id}/students`)
+    .get(`${TEAMS_URL}/${id}/users`)
     .then((response) => response.data["hydra:member"]);
 }
 
