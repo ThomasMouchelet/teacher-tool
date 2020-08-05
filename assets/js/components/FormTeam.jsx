@@ -48,7 +48,6 @@ const FormTeam = (props) => {
         await TeamsAPI.update(team.id, team);
         toast.success("Modifié avec succès");
       } else {
-        console.log(team);
         const teamAdded = await TeamsAPI.create(team);
         props.setDialogIsOpen(false);
         setTeamPath(`/teams/${teamAdded.id}`);
@@ -89,7 +88,6 @@ const FormTeam = (props) => {
           defaultValue={team.name}
           value={team.name || ""}
           onChange={handleChange}
-          error={errors.name ? true : false}
         />
         <FormHelperText id="component-error-text">{errors.name}</FormHelperText>
       </FormControl>

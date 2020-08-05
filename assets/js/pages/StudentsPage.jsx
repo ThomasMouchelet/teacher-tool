@@ -34,7 +34,6 @@ const StudentsPage = (props) => {
   };
 
   useEffect(() => {
-    console.log(isAdmin);
     fetchStudents();
     setTeamPath(`/teams/${team_id}`);
   }, [team_id]);
@@ -75,16 +74,6 @@ const StudentsPage = (props) => {
     <div>
       <div>
         <h1>Liste des étudiants</h1>
-        <DialogForm
-          dialogIsOpen={dialogIsOpen}
-          setDialogIsOpen={setDialogIsOpen}
-        >
-          <FormStudent
-            teamID={team_id}
-            fetchStudents={fetchStudents}
-            addStudent={addStudent}
-          />
-        </DialogForm>
       </div>
       <List component="nav" aria-label="main mailbox folders">
         {students.map((student) => {

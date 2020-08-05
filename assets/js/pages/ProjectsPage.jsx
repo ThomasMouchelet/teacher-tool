@@ -49,7 +49,6 @@ const ProjectsPage = (props) => {
       setDialogIsOpen(false);
       fetchProjects();
     } catch ({ response }) {
-      console.log(response);
       if (response.status === 400) {
         toast.error("Une erreur est survenu lors de l'envoie des données");
       }
@@ -59,7 +58,6 @@ const ProjectsPage = (props) => {
         violations.forEach(({ propertyPath, message }) => {
           apiErrors[propertyPath] = message;
         });
-        console.log(apiErrors);
         setErrors(apiErrors);
         toast.error("Des erreurs dans votre formulaire");
       }

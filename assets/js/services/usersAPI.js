@@ -26,14 +26,9 @@ function findOne(id) {
 }
 
 function create(user) {
-  return axios
-    .post(USERS_URL, {
-      ...user,
-      teams: ["api/teams/" + user.team],
-    })
-    .then(async (response) => {
-      return response;
-    });
+  return axios.post(USERS_URL, user).then(async (response) => {
+    return response;
+  });
 }
 
 function isAdmin() {
