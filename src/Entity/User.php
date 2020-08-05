@@ -20,7 +20,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
  *          "normalization_context"={"groups"={"role_subresource"}}
  *      },
  *      "api_teams_users_get_subresource"={
- *          "normalization_context"={"groups"={"team_subresource"}}
+ *          "normalization_context"={"groups"={"teams_subresource"}}
  *      }
  *  },
  *  normalizationContext={
@@ -34,19 +34,19 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"users_read", "role_subresource","team_subresource"})
+     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"users_read", "role_subresource","team_subresource"})
+     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"users_read", "users_subresource","team_subresource"})
+     * @Groups({"users_read", "users_subresource","teams_subresource","students_subresource"})
      */
     private $roles = [];
 
@@ -64,13 +64,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"users_read", "role_subresource","team_subresource"})
+     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"users_read", "role_subresource","team_subresource"})
+     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource"})
      */
     private $lastName;
 

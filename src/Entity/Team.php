@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "summary"="Get all students",
  *          "description"="Get all students"
  *       },
- *       "normalization_context"={"groups"={"team_subresource"}},
+ *       "normalization_context"={"groups"={"students_subresource"}},
  *     }
  *  },
  *  normalizationContext={"groups"={"teams_read"}},
