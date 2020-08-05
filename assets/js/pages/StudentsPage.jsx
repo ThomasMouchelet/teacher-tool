@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import TeamPathContext from "../contexts/TeamPathContext";
 import { NavLink } from "react-router-dom";
+
+import TeamPathContext from "../contexts/TeamPathContext";
+import AdminContext from "../contexts/AdminContext";
 
 import UsersAPI from "../services/usersAPI";
 
@@ -19,6 +21,7 @@ const StudentsPage = (props) => {
   const { team_id } = props.match.params;
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const { setTeamPath } = useContext(TeamPathContext);
+  const { isAdmin } = useContext(AdminContext);
 
   const fetchStudents = async () => {
     try {
@@ -31,6 +34,7 @@ const StudentsPage = (props) => {
   };
 
   useEffect(() => {
+    console.log(isAdmin);
     fetchStudents();
     setTeamPath(`/teams/${team_id}`);
   }, [team_id]);
@@ -98,13 +102,15 @@ const StudentsPage = (props) => {
 
                 <Divider />
               </NavLink>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => deleteTeamStudent(student)}
-              >
-                Supprimer
-              </Button>
+              {isAdmin && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => deleteTeamStudent(student)}
+                >
+                  Supprimer
+                </Button>
+              )}
             </li>
           );
         })}

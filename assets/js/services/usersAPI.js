@@ -1,5 +1,6 @@
 import axios from "axios";
 import { USERS_URL, TEAMS_URL } from "../config";
+import jwtDecode from "jwt-decode";
 
 function register(user) {
   return axios.post(USERS_URL, user);
@@ -35,6 +36,14 @@ function create(user) {
     });
 }
 
+function isAdmin() {
+  const token = window.localStorage.getItem("authToken");
+  if (token) {
+    const { roles } = jwtDecode(token);
+    return roles.includes("ROLE_TEACHER") ? true : false;
+  }
+}
+
 export default {
   register,
   update,
@@ -42,4 +51,5 @@ export default {
   findAllTeamsStudents,
   deleteUser,
   create,
+  isAdmin,
 };

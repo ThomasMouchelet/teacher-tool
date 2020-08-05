@@ -7,9 +7,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import AuthContext from "./contexts/AuthContext";
 import TeamPathContext from "./contexts/TeamPathContext";
+import AdminContext from "./contexts/AdminContext";
 
 import AuthAPI from "./services/authAPI";
 import TeamsAPI from "./services/teamsAPI";
+import UsersAPI from "./services/usersAPI";
 
 import DrawerNav from "./components/Drawer";
 import TabBar from "./components/TabBar";
@@ -31,6 +33,7 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     AuthAPI.isAuthenticated()
   );
+  const [isAdmin, setIsAdmin] = useState(UsersAPI.isAdmin());
   const DrawerNavWithRouter = withRouter(DrawerNav);
   const TabBarWithRouter = withRouter(TabBar);
   const [teams, setTeams] = useState([]);
@@ -61,56 +64,63 @@ const App = () => {
         setIsAuthenticated,
       }}
     >
-      <TeamPathContext.Provider
+      <AdminContext.Provider
         value={{
-          teamPath,
-          setTeamPath,
+          isAdmin,
+          setIsAdmin,
         }}
       >
-        <HashRouter>
-          <Container maxWidth="xl">
-            <Grid container spacing={2}>
-              <Grid item sm={1}>
-                {isAuthenticated && <DrawerNavWithRouter teams={teams} />}
-              </Grid>
-              <Grid item sm={11}>
-                {isAuthenticated && <TabBarWithRouter teamPath={teamPath} />}
-                <Switch>
-                  <Route
-                    path="/login"
-                    render={(props) => <LoginPage {...props} />}
-                  />
-                  <Route
-                    path="/register"
-                    render={(props) => <RegisterPage {...props} />}
-                  />
+        <TeamPathContext.Provider
+          value={{
+            teamPath,
+            setTeamPath,
+          }}
+        >
+          <HashRouter>
+            <Container maxWidth="xl">
+              <Grid container spacing={2}>
+                <Grid item sm={1}>
+                  {isAuthenticated && <DrawerNavWithRouter teams={teams} />}
+                </Grid>
+                <Grid item sm={11}>
+                  {isAuthenticated && <TabBarWithRouter teamPath={teamPath} />}
+                  <Switch>
+                    <Route
+                      path="/login"
+                      render={(props) => <LoginPage {...props} />}
+                    />
+                    <Route
+                      path="/register"
+                      render={(props) => <RegisterPage {...props} />}
+                    />
 
-                  <PrivateRoute path="/users/:id" component={UserPage} />
-                  <PrivateRoute
-                    path="/teams/:team_id/projects/:id"
-                    component={ProjectPage}
-                  />
-                  <PrivateRoute
-                    path="/teams/:team_id/students/:id"
-                    component={StudentPage}
-                  />
-                  <PrivateRoute
-                    path="/teams/:team_id/projects"
-                    component={ProjectsPage}
-                  />
-                  <PrivateRoute
-                    path="/teams/:team_id/students"
-                    component={StudentsPage}
-                  />
-                  <PrivateRoute path="/teams/:team_id" component={TeamPage} />
-                  <Route path="*" exact={true} component={LoginPage} />
-                </Switch>
+                    <PrivateRoute path="/users/:id" component={UserPage} />
+                    <PrivateRoute
+                      path="/teams/:team_id/projects/:id"
+                      component={ProjectPage}
+                    />
+                    <PrivateRoute
+                      path="/teams/:team_id/students/:id"
+                      component={StudentPage}
+                    />
+                    <PrivateRoute
+                      path="/teams/:team_id/projects"
+                      component={ProjectsPage}
+                    />
+                    <PrivateRoute
+                      path="/teams/:team_id/students"
+                      component={StudentsPage}
+                    />
+                    <PrivateRoute path="/teams/:team_id" component={TeamPage} />
+                    <Route path="*" exact={true} component={LoginPage} />
+                  </Switch>
+                </Grid>
               </Grid>
-            </Grid>
-          </Container>
-        </HashRouter>
-      </TeamPathContext.Provider>
-      <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
+            </Container>
+          </HashRouter>
+        </TeamPathContext.Provider>
+        <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
+      </AdminContext.Provider>
     </AuthContext.Provider>
   );
 };

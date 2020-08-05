@@ -2,9 +2,11 @@ import React, { useState, useContext } from "react";
 
 import AuthContext from "../contexts/AuthContext";
 import TeamPathContext from "../contexts/TeamPathContext";
+import AdminContext from "../contexts/AdminContext";
 
 import AuthAPI from "../services/authAPI";
 import TeamsAPI from "../services/teamsAPI";
+import UsersAPI from "../services/usersAPI";
 
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -15,6 +17,7 @@ import FormControl from "@material-ui/core/FormControl";
 const LoginPage = ({ history }) => {
   const { setIsAuthenticated } = useContext(AuthContext);
   const { setTeamPath } = useContext(TeamPathContext);
+  const { setIsAdmin } = useContext(AdminContext);
 
   const [credentials, setCredentials] = useState({
     username: "",
@@ -36,6 +39,7 @@ const LoginPage = ({ history }) => {
       await AuthAPI.authenticate(credentials);
       setError("");
       setIsAuthenticated(true);
+      setIsAdmin(UsersAPI.isAdmin());
       const firstTeam = await TeamsAPI.getFirstTeam();
       setTeamPath(`/teams/${firstTeam.id}`);
       history.replace("/");
