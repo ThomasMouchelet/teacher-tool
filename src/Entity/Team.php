@@ -139,6 +139,11 @@ class Team
         return $this;
     }
 
+    public function setUser($user)
+    {
+        $this->addUser($user);
+    }
+
     /**
      * @return Collection|User[]
      */

@@ -11,6 +11,7 @@ function findOne(id) {
 }
 
 function create(team) {
+  console.log(team);
   return axios.post(TEAMS_URL, team).then((response) => response.data);
 }
 

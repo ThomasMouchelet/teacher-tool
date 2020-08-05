@@ -34,7 +34,7 @@ class TeamSubscriber implements EventSubscriberInterface
         $method = $event->getRequest()->getMethod();
 
         if ($team instanceof Team && $method === "POST") {
-            $team->setUser($this->security->getUser());
+            $team->addUser($this->security->getUser());
             if (empty($team->getCreatedAt())) {
                 $team->setCreatedAt(new \DateTime());
             }

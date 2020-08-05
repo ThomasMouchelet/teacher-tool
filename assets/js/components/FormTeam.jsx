@@ -38,7 +38,6 @@ const FormTeam = (props) => {
     setTeam({
       ...team,
       [name]: value,
-      teacher: "/api/teachers/4",
     });
   };
 
@@ -49,8 +48,8 @@ const FormTeam = (props) => {
         await TeamsAPI.update(team.id, team);
         toast.success("Modifié avec succès");
       } else {
+        console.log(team);
         const teamAdded = await TeamsAPI.create(team);
-        console.log(teamAdded);
         props.setDialogIsOpen(false);
         setTeamPath(`/teams/${teamAdded.id}`);
         toast.success("Ajouté avec succès");
