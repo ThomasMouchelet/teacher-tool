@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -25,34 +25,37 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
  *  },
  *  normalizationContext={
  *     "groups"={"users_read"}
- *  }
+ *  },
+ *  denormalizationContext={"disable_type_enforcement"=true}
  * )
  */
 class User implements UserInterface
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource"})
+     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource","students_pos_subresource"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource"})
+     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource","students_pos_subresource"})
+     * @Assert\NotBlank
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"users_read", "users_subresource","teams_subresource","students_subresource"})
+     * @Groups({"users_read", "users_subresource","teams_subresource","students_subresource","students_pos_subresource"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $password;
 
@@ -64,13 +67,15 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource"})
+     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource","students_pos_subresource"})
+     * @Assert\NotBlank
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource"})
+     * @Groups({"users_read", "role_subresource","teams_subresource","students_subresource","students_pos_subresource"})
+     * @Assert\NotBlank
      */
     private $lastName;
 

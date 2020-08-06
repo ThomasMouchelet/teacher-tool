@@ -13,6 +13,9 @@ import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 
 import { toast } from "react-toastify";
+import TeamsAPI from "../services/teamsAPI";
+
+import firebase from "../firebase";
 
 const StudentsPage = (props) => {
   const [students, setStudents] = useState([]);
@@ -51,6 +54,33 @@ const StudentsPage = (props) => {
         console.log(error);
       }
     });
+  };
+
+  const acceptTeamStudent = async (student) => {
+    // let student = {...student, team}
+    try {
+      const response = await TeamsAPI.addUser(student.id, team_id);
+      setStudents(response);
+
+      const db = firebase.firestore();
+
+      db.collection("studentRequest")
+        .get()
+        .then((res) => {
+          res.forEach((element) => {
+            console.log(element.data());
+            if (
+              element.data().userID == student.id &&
+              element.data().teamID == team_id
+            ) {
+              element.ref.delete();
+            }
+          });
+        });
+    } catch (error) {
+      console.log(error);
+      toast.error("Une erreur est survenue");
+    }
   };
 
   const deleteTeamStudent = async (student) => {
@@ -101,7 +131,7 @@ const StudentsPage = (props) => {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => deleteTeamStudent(student)}
+                      onClick={() => acceptTeamStudent(student)}
                     >
                       Accepter
                     </Button>

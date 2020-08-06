@@ -5,6 +5,7 @@ import jwtDecode from "jwt-decode";
 function register(user) {
   return axios.post(USERS_URL, user);
 }
+
 function update(id, user) {
   return axios
     .put(USERS_URL + "/" + id, user)

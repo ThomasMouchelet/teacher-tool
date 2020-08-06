@@ -18,15 +18,26 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      "projects_get_subresource"={"path"="/teams/{id}/projects"},
  *      "users_get_subresource"={"path"="/teams/{id}/users"}
  *  },
- *  itemOperations={"GET", "PUT", "DELETE", "students"={
- *       "method"="get", 
+ *  itemOperations={"GET", "PUT", "DELETE", 
+ *     "get_team_students"={
+ *       "method"="get",
  *       "path"="/teams/{id}/students", 
- *       "controller"="App\Controller\TeamGetStudentsController", 
+ *       "controller"="App\Controller\TeamStudentsController", 
  *       "swagger_context"={
  *          "summary"="Get all students",
  *          "description"="Get all students"
  *       },
  *       "normalization_context"={"groups"={"students_subresource"}},
+ *     },
+ *     "post_team_students"={
+ *       "method"="post",
+ *       "path"="/teams/{id}/students", 
+ *       "controller"="App\Controller\TeamStudentsController", 
+ *       "swagger_context"={
+ *          "summary"="Get all students",
+ *          "description"="Get all students"
+ *       },
+ *       "normalization_context"={"groups"={"students_pos_subresource"}},
  *     }
  *  },
  *  normalizationContext={"groups"={"teams_read"}},
@@ -36,8 +47,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Team
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"teams_read"})
      */
@@ -59,7 +70,6 @@ class Team
      * @Assert\NotBlank(message="La date d'envoi doit être renseignée")
      */
     private $createdAt;
-
 
     /**
      * @ORM\OneToMany(targetEntity=Project::class, mappedBy="team")
