@@ -41,6 +41,7 @@ const App = () => {
   const TabBarWithRouter = withRouter(TabBar);
   const [teams, setTeams] = useState([]);
   const [teamPath, setTeamPath] = useState(TeamPathContext);
+  const db = firebase.firestore();
 
   useEffect(() => {
     fetchStudentsTeamRequests();
@@ -50,13 +51,22 @@ const App = () => {
   }, [teamPath]);
 
   const fetchStudentsTeamRequests = async () => {
-    const db = firebase.firestore();
     db.collection("studentRequest").onSnapshot((snapshot) => {
       let requests = [];
-      snapshot.forEach((doc) => {
+      snapshot.forEach(async (doc) => {
         const request = doc.data();
-        if (`/teams/${request.teamID}` == teamPath && isAdmin) {
+        if (
+          `/teams/${request.teamID}` == teamPath &&
+          isAdmin &&
+          request.accepted === false
+        ) {
           requests = [...requests, request.userID];
+        }
+
+        const userConnected = await UsersAPI.getUserID();
+        if (request.accepted === true && request.userID == userConnected) {
+          fetchTeams();
+          doc.ref.delete();
         }
       });
       setRequestStudentsTeam(requests);

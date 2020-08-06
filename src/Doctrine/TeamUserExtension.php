@@ -35,8 +35,6 @@ class TeamUserExtension implements QueryCollectionExtensionInterface, QueryItemE
             &&
             $user instanceof User
         ) {
-
-
             $rootAlias = $queryBuilder->getRootAliases()[0];
 
             $queryBuilder->innerJoin("$rootAlias.users", "u");
@@ -49,5 +47,6 @@ class TeamUserExtension implements QueryCollectionExtensionInterface, QueryItemE
     public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, ?string $operationName = null, array $context = [])
     {
         // $this->addWhere($queryBuilder, $resourceClass);
+
     }
 }

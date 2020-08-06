@@ -40,6 +40,14 @@ function isAdmin() {
   }
 }
 
+function getUserID() {
+  const token = window.localStorage.getItem("authToken");
+  if (token) {
+    const { id } = jwtDecode(token);
+    return id;
+  }
+}
+
 export default {
   register,
   update,
@@ -48,4 +56,5 @@ export default {
   deleteUser,
   create,
   isAdmin,
+  getUserID,
 };

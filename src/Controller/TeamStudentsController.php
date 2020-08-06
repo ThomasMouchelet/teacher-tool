@@ -40,7 +40,6 @@ class TeamStudentsController
         }
 
         if ($request->isMethod('POST')) {
-
             if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
                 $dataRequest = json_decode($request->getContent(), true);
                 $user = $ripoUser->find($dataRequest["id"]);

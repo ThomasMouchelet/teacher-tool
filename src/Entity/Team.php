@@ -83,6 +83,12 @@ class Team
      */
     private $users;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"teams_read"})
+     */
+    private $identifier;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
@@ -176,6 +182,18 @@ class Team
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
         }
+
+        return $this;
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
 
         return $this;
     }

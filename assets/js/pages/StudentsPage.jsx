@@ -57,23 +57,19 @@ const StudentsPage = (props) => {
   };
 
   const acceptTeamStudent = async (student) => {
-    // let student = {...student, team}
     try {
       const response = await TeamsAPI.addUser(student.id, team_id);
       setStudents(response);
-
       const db = firebase.firestore();
-
       db.collection("studentRequest")
         .get()
         .then((res) => {
           res.forEach((element) => {
-            console.log(element.data());
             if (
               element.data().userID == student.id &&
               element.data().teamID == team_id
             ) {
-              element.ref.delete();
+              element.ref.set({ ...element.data(), accepted: true });
             }
           });
         });

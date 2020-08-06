@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use App\Repository\TeamRepository;
 use App\Entity\Team;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Uid\Uuid;
 
 class TeamSubscriber implements EventSubscriberInterface
 {
@@ -32,12 +33,13 @@ class TeamSubscriber implements EventSubscriberInterface
     {
         $team = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
-
+        $uuid = Uuid::v4();
         if ($team instanceof Team && $method === "POST") {
             $team->addUser($this->security->getUser());
             if (empty($team->getCreatedAt())) {
                 $team->setCreatedAt(new \DateTime());
             }
+            $team->setIdentifier($uuid);
         }
     }
 }

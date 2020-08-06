@@ -12,6 +12,7 @@ use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\VarDumper\Cloner\Data;
 use App\Entity\User;
+use Symfony\Component\Uid\Uuid;
 
 class TeacherToolFixtures extends Fixture
 {
@@ -36,7 +37,6 @@ class TeacherToolFixtures extends Fixture
         $manager->persist($teacherRole);
         $manager->persist($studentRole);
 
-
         for ($t = 0; $t < 1; $t++) {
             $user = new User();
             $hash = $this->encoder->encodePassword($user, "password");
@@ -51,7 +51,9 @@ class TeacherToolFixtures extends Fixture
 
             for ($te = 0; $te < mt_rand(1, 3); $te++) {
                 $team = new Team();
+                $uuid = Uuid::v4();
                 $team->setName($faker->company())
+                    ->setIdentifier($uuid)
                     ->setCreatedAt($faker->dateTimeBetween('-6 months'))
                     ->addUser($user);
 

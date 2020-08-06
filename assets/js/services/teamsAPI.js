@@ -29,11 +29,19 @@ function getFirstTeam() {
 }
 
 function addUser(user_id, team_id) {
-  console.log(user_id);
-  console.log(team_id);
   return axios
     .post(`${TEAMS_URL}/${team_id}/students`, { id: user_id })
     .then((response) => response.data["hydra:member"]);
+}
+
+function findByIdentifier(identifier) {
+  const params = {
+    identifier: { identifier },
+  };
+
+  return axios
+    .get(TEAMS_URL, { params })
+    .then((response) => response.data["hydra:member"][0]);
 }
 
 export default {
@@ -44,4 +52,5 @@ export default {
   deleteTeam,
   getFirstTeam,
   addUser,
+  findByIdentifier,
 };
