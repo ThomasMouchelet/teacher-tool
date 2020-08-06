@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import TeamPathContext from "../contexts/TeamPathContext";
 import AdminContext from "../contexts/AdminContext";
+import RequestStudentsTeamContext from "../contexts/RequestStudentsTeamContext";
 
 import UsersAPI from "../services/usersAPI";
 
@@ -11,16 +12,17 @@ import { ListItem, Divider } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 
-import DialogForm from "../components/DialogForm";
-
 import { toast } from "react-toastify";
 
 const StudentsPage = (props) => {
   const [students, setStudents] = useState([]);
   const { team_id } = props.match.params;
-  const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const { setTeamPath } = useContext(TeamPathContext);
   const { isAdmin } = useContext(AdminContext);
+  const { requestStudentsTeam, setRequestStudentsTeam } = useContext(
+    RequestStudentsTeamContext
+  );
+  const [studentsWaiting, setStudentsWaiting] = useState([]);
 
   const fetchStudents = async () => {
     try {
@@ -34,18 +36,20 @@ const StudentsPage = (props) => {
 
   useEffect(() => {
     fetchStudents();
+    fetchStudentsWRequest();
     setTeamPath(`/teams/${team_id}`);
   }, [team_id]);
 
-  const addStudent = async (student) => {
-    try {
-      const response = await UsersAPI.create(student);
-      console.log(response);
-      setDialogIsOpen(false);
-      fetchStudents();
-    } catch (error) {
-      console.log(error);
-    }
+  const fetchStudentsWRequest = async () => {
+    Object.keys(requestStudentsTeam).map(async (request) => {
+      const userID = requestStudentsTeam[request];
+      try {
+        const user = await UsersAPI.findOne(userID);
+        setStudentsWaiting([...studentsWaiting, user]);
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
 
   const deleteTeamStudent = async (student) => {
@@ -71,6 +75,43 @@ const StudentsPage = (props) => {
 
   return (
     <div>
+      {Object.keys(requestStudentsTeam).length > 0 && (
+        <>
+          <div>
+            <h1>Liste des demandes</h1>
+          </div>
+          <List component="nav" aria-label="main mailbox folders">
+            {studentsWaiting.map((student) => {
+              return (
+                <li className="listItem" key={student.id}>
+                  <NavLink
+                    to={`/teams/${props.match.params.team_id}/students/${student.id}`}
+                  >
+                    <ListItem button>
+                      <ListItemText
+                        primary={student.lastName + " " + student.firstName}
+                        secondary="Student"
+                      />
+                    </ListItem>
+
+                    <Divider />
+                  </NavLink>
+                  {isAdmin && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => deleteTeamStudent(student)}
+                    >
+                      Accepter
+                    </Button>
+                  )}
+                </li>
+              );
+            })}
+          </List>
+        </>
+      )}
+
       <div>
         <h1>Liste des étudiants</h1>
       </div>
