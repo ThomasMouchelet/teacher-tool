@@ -4,10 +4,12 @@ import React, { useState, useEffect } from "react";
 import { HashRouter, Switch, Route, withRouter } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import firebase from "./firebase";
 
 import AuthContext from "./contexts/AuthContext";
 import TeamPathContext from "./contexts/TeamPathContext";
 import AdminContext from "./contexts/AdminContext";
+import RequestStudentsTeamContext from "./contexts/RequestStudentsTeamContext";
 
 import AuthAPI from "./services/authAPI";
 import TeamsAPI from "./services/teamsAPI";
@@ -34,16 +36,32 @@ const App = () => {
     AuthAPI.isAuthenticated()
   );
   const [isAdmin, setIsAdmin] = useState(UsersAPI.isAdmin());
+  const [requestStudentsTeam, setRequestStudentsTeam] = useState({});
   const DrawerNavWithRouter = withRouter(DrawerNav);
   const TabBarWithRouter = withRouter(TabBar);
   const [teams, setTeams] = useState([]);
   const [teamPath, setTeamPath] = useState(TeamPathContext);
 
   useEffect(() => {
+    fetchStudentsTeamRequests();
     AuthAPI.setup();
     AuthAPI.isAuthenticated();
     fetchTeams();
   }, [teamPath]);
+
+  const fetchStudentsTeamRequests = async () => {
+    const db = firebase.firestore();
+    db.collection("studentRequest").onSnapshot((snapshot) => {
+      let requests = [];
+      snapshot.forEach((doc) => {
+        const request = doc.data();
+        if (`/teams/${request.teamID}` == teamPath && isAdmin) {
+          requests = [...requests, request.userID];
+        }
+      });
+      setRequestStudentsTeam(requests);
+    });
+  };
 
   const fetchTeams = async () => {
     try {
@@ -76,48 +94,58 @@ const App = () => {
             setTeamPath,
           }}
         >
-          <HashRouter>
-            <Container maxWidth="xl">
-              <Grid container spacing={2}>
-                <Grid item sm={1}>
-                  {isAuthenticated && <DrawerNavWithRouter teams={teams} />}
-                </Grid>
-                <Grid item sm={11}>
-                  {isAuthenticated && <TabBarWithRouter teamPath={teamPath} />}
-                  <Switch>
-                    <Route
-                      path="/login"
-                      render={(props) => <LoginPage {...props} />}
-                    />
-                    <Route
-                      path="/register"
-                      render={(props) => <RegisterPage {...props} />}
-                    />
+          <RequestStudentsTeamContext.Provider
+            value={{
+              requestStudentsTeam,
+              setRequestStudentsTeam,
+            }}
+          >
+            <HashRouter>
+              <Container maxWidth="xl">
+                <Grid container spacing={2}>
+                  <Grid item sm={1}>
+                    {isAuthenticated && <DrawerNavWithRouter teams={teams} />}
+                  </Grid>
+                  <Grid item sm={11}>
+                    {isAuthenticated && <TabBarWithRouter />}
+                    <Switch>
+                      <Route
+                        path="/login"
+                        render={(props) => <LoginPage {...props} />}
+                      />
+                      <Route
+                        path="/register"
+                        render={(props) => <RegisterPage {...props} />}
+                      />
 
-                    <PrivateRoute path="/users/:id" component={UserPage} />
-                    <PrivateRoute
-                      path="/teams/:team_id/projects/:id"
-                      component={ProjectPage}
-                    />
-                    <PrivateRoute
-                      path="/teams/:team_id/students/:id"
-                      component={StudentPage}
-                    />
-                    <PrivateRoute
-                      path="/teams/:team_id/projects"
-                      component={ProjectsPage}
-                    />
-                    <PrivateRoute
-                      path="/teams/:team_id/students"
-                      component={StudentsPage}
-                    />
-                    <PrivateRoute path="/teams/:team_id" component={TeamPage} />
-                    <Route path="*" exact={true} component={LoginPage} />
-                  </Switch>
+                      <PrivateRoute path="/users/:id" component={UserPage} />
+                      <PrivateRoute
+                        path="/teams/:team_id/projects/:id"
+                        component={ProjectPage}
+                      />
+                      <PrivateRoute
+                        path="/teams/:team_id/students/:id"
+                        component={StudentPage}
+                      />
+                      <PrivateRoute
+                        path="/teams/:team_id/projects"
+                        component={ProjectsPage}
+                      />
+                      <PrivateRoute
+                        path="/teams/:team_id/students"
+                        component={StudentsPage}
+                      />
+                      <PrivateRoute
+                        path="/teams/:team_id"
+                        component={TeamPage}
+                      />
+                      <Route path="*" exact={true} component={LoginPage} />
+                    </Switch>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Container>
-          </HashRouter>
+              </Container>
+            </HashRouter>
+          </RequestStudentsTeamContext.Provider>
         </TeamPathContext.Provider>
         <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
       </AdminContext.Provider>

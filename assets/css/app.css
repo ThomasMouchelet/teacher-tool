@@ -33,3 +33,8 @@ form > div,
   right: 0;
   top: 30%;
 }
+.MuiBadge-anchorOriginTopRightRectangle {
+  position: absolute !important;
+  top: 17px !important;
+  right: 20px !important;
+}

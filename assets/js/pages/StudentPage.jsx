@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { GoChevronLeft } from "react-icons/go";
-import StudentsAPI from "../services/studentsAPI";
+import UsersAPI from "../services/usersAPI";
 import TeamPathContext from "../contexts/TeamPathContext";
 
 const StudentPage = (props) => {
@@ -12,7 +12,7 @@ const StudentPage = (props) => {
 
   const getStudent = async () => {
     try {
-      const student = await StudentsAPI.findOne(id);
+      const student = await UsersAPI.findOne(id);
       setStudent(student);
     } catch (error) {
       console.log(error);
