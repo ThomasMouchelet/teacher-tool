@@ -38,9 +38,10 @@ const StudentsPage = (props) => {
     fetchStudents();
     fetchStudentsWRequest();
     setTeamPath(`/teams/${team_id}`);
-  }, [team_id]);
+  }, [team_id, requestStudentsTeam]);
 
   const fetchStudentsWRequest = async () => {
+    setStudentsWaiting([]);
     Object.keys(requestStudentsTeam).map(async (request) => {
       const userID = requestStudentsTeam[request];
       try {

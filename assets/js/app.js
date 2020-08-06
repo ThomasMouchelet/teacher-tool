@@ -14,6 +14,7 @@ import RequestStudentsTeamContext from "./contexts/RequestStudentsTeamContext";
 import AuthAPI from "./services/authAPI";
 import TeamsAPI from "./services/teamsAPI";
 import UsersAPI from "./services/usersAPI";
+import StudentsTeamsRequestsAPI from "./services/studentsTeamsRequestsAPI";
 
 import DrawerNav from "./components/Drawer";
 import TabBar from "./components/TabBar";
